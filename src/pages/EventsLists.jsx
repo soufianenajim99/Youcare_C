@@ -2,7 +2,9 @@ import Annonce from "@/components/Annonce";
 import Searchinput from "@/components/ui/searchinput";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useStateContext } from "../contexts/contextprovider";
 import Loading from "@/components/Loading";
+import { Navigate } from "react-router-dom";
 
 const EventsLists = () => {
   const [showPost, setShowPost] = useState(null);
@@ -27,6 +29,12 @@ const EventsLists = () => {
   useEffect(() => {
     getPosts();
   }, []);
+
+  const { token } = useStateContext();
+  if (!token) {
+    // return <Navigate to="/login" />;
+    return <Navigate replace to="/login" />;
+  }
 
   return (
     <div className=" my-32">
