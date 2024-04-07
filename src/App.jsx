@@ -17,6 +17,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import EventsLists from "./pages/EventsLists";
 import Dashboard from "./pages/Orga/Dashboard";
+import { ContextProvider } from "./contexts/contextprovider";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,7 +33,9 @@ const router = createBrowserRouter(
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <ContextProvider>
+        <RouterProvider router={router} />
+      </ContextProvider>
     </>
   );
 }

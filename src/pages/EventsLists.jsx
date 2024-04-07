@@ -32,7 +32,6 @@ const EventsLists = () => {
 
   const { token } = useStateContext();
   if (!token) {
-    // return <Navigate to="/login" />;
     return <Navigate replace to="/login" />;
   }
 
