@@ -5,10 +5,15 @@ import axios from "axios";
 import { useStateContext } from "../contexts/contextprovider";
 import Loading from "@/components/Loading";
 import { Navigate } from "react-router-dom";
+import axiosClient from "@/axiosClient";
 
 const EventsLists = () => {
   const [showPost, setShowPost] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // axiosClient.get("/user").then(({ data }) => {
+  //   setUser(data);
+  // });
 
   // axios.get(`http://127.0.0.1:8000/api/anno`).then((response) => {
   //   setShowPost(response.data);
@@ -18,7 +23,7 @@ const EventsLists = () => {
 
   async function getPosts() {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/anno");
+      const response = await axiosClient.get("http://127.0.0.1:8000/api/anno");
       setShowPost(response.data);
       setLoading(true);
     } catch (error) {

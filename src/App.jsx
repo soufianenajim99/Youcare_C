@@ -1,7 +1,3 @@
-import { NextUIProvider } from "@nextui-org/react";
-import Login from "./components/Login";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
 import {
   Route,
   createBrowserRouter,
@@ -11,13 +7,16 @@ import {
 import "./App.css";
 import HomePage from "./pages/HomePage";
 
-import ListAnnonce from "./components/ListAnnonce";
 import MainLayout from "./layouts/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import EventsLists from "./pages/EventsLists";
 import Dashboard from "./pages/Orga/Dashboard";
 import { ContextProvider } from "./contexts/contextprovider";
+
+import UserContext from "./contexts/UserContext";
+import { useStateContext } from "./contexts/contextprovider";
+import { jwtDecode } from "jwt-decode";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,12 +29,17 @@ const router = createBrowserRouter(
     </Route>
   )
 );
+const took = localStorage.getItem("ACCESS_TOKEN");
+const decodedToken = jwtDecode(took);
+
 function App() {
   return (
     <>
-      <ContextProvider>
-        <RouterProvider router={router} />
-      </ContextProvider>
+      <UserContext.Provider value={decodedToken}>
+        <ContextProvider>
+          <RouterProvider router={router} />
+        </ContextProvider>
+      </UserContext.Provider>
     </>
   );
 }

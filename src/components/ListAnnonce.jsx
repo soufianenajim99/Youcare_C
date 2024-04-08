@@ -2,13 +2,14 @@ import Annonce from "./Annonce";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Loading from "@/components/Loading";
+import axiosClient from "@/axiosClient";
 
 const ListAnnonce = () => {
   const [showPost, setShowPost] = useState(null);
   const [loading, setLoading] = useState(false);
   async function getPosts() {
     try {
-      const response = await axios.get(
+      const response = await axiosClient.get(
         "http://127.0.0.1:8000/api/anno?limit=6"
       );
       setShowPost(response.data);

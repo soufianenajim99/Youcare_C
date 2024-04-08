@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import UserContext from "@/contexts/UserContext";
 import {
   Navbar,
   NavbarBrand,
@@ -10,8 +11,22 @@ import {
   Button,
 } from "@nextui-org/react";
 
+import { useStateContext } from "@/contexts/contextprovider";
 import { Link } from "react-router-dom";
+import axiosClient from "@/axiosClient";
+
 export default function App() {
+  // const [counter] = useContext(UserContext)
+  const onLogout = (ev) => {
+    ev.preventDefault();
+    axiosClient.get("/logout").then(({}) => {
+      setUser(null);
+      setToken(null);
+    });
+  };
+
+  const { token, setUser, setToken } = useStateContext();
+  // console.log(user);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
@@ -26,7 +41,8 @@ export default function App() {
     "Help & Feedback",
     "Log Out",
   ];
-
+  const value = useContext(UserContext);
+  console.log(value);
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} shouldHideOnScroll>
       <NavbarContent>
@@ -58,16 +74,29 @@ export default function App() {
           </Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link to="/login">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            <Link to="/register">Sign Up</Link>
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
+
+      {token ? (
+        <NavbarContent justify="end">
+          <span className=" py-10">{`Welcome ${value.name}`}</span>
+          <NavbarItem>
+            <Button onClick={onLogout} color="danger" href="#" variant="flat">
+              Logout
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      ) : (
+        <NavbarContent justify="end">
+          <NavbarItem className="hidden lg:flex">
+            <Link to="/login">Login</Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} color="primary" href="#" variant="flat">
+              <Link to="/register">Sign Up</Link>
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      )}
+
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
