@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useContext } from "react";
 import UserContext from "@/contexts/UserContext";
 import { useRef } from "react";
+import { redirect } from "react-router-dom";
 import axiosClient from "@/axiosClient";
 
 export function ProfilePage() {
@@ -22,22 +23,24 @@ export function ProfilePage() {
 
   let value = useContext(UserContext);
 
-  console.log(value);
-  console.log("profile");
+  // console.log(value);
+  // console.log("profile");
 
   const Submit = (ev) => {
-    // ev.preventDefault();
+    ev.preventDefault();
     const payload = {
       name: nameRef.current.value,
       email: emailRef.current.value,
     };
-
-    axiosClient.post("/update", payload).catch((err) => {
-      const response = err.response;
-      if (response && response.status === 422) {
-        console.log(response.data.errors);
-      }
-    });
+    axiosClient
+      .patch("/update", payload)
+      .then()
+      .catch((err) => {
+        const response = err.response;
+        if (response) {
+          console.log(response.data.errors);
+        }
+      });
   };
 
   return (

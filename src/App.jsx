@@ -65,7 +65,7 @@ function App() {
   };
   showUser && (useer = showUser.user);
   // if (showUser !== "guest") {
-  console.log(useer);
+  // console.log(useer);
 
   return (
     <>
