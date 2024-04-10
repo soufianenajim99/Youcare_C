@@ -17,6 +17,9 @@ import { ContextProvider } from "./contexts/contextprovider";
 import UserContext from "./contexts/UserContext";
 import { useStateContext } from "./contexts/contextprovider";
 import { jwtDecode } from "jwt-decode";
+import { ProfilePage } from "./pages/ProfilePage";
+import axiosClient from "./axiosClient";
+import { useEffect, useState } from "react";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,16 +29,47 @@ const router = createBrowserRouter(
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/events" element={<EventsLists />} />
       <Route path="/orga" element={<Dashboard />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Route>
   )
 );
+let decodedToken = null;
 const took = localStorage.getItem("ACCESS_TOKEN");
-const decodedToken = jwtDecode(took);
+if (took) {
+  decodedToken = jwtDecode(took);
+} else {
+  decodedToken = null;
+}
 
 function App() {
+  const [showUser, setShowUser] = useState(null);
+  async function getPosts() {
+    try {
+      const response = await axiosClient.get("http://127.0.0.1:8000/api/user");
+      setShowUser(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  // const naaame = showUser.user.name;
+
+  // console.log(showUser);
+  let useer = {
+    name: "loading...",
+    email: "loading...",
+  };
+  showUser && (useer = showUser.user);
+  // if (showUser !== "guest") {
+  console.log(useer);
+
   return (
     <>
-      <UserContext.Provider value={decodedToken}>
+      <UserContext.Provider value={useer}>
         <ContextProvider>
           <RouterProvider router={router} />
         </ContextProvider>

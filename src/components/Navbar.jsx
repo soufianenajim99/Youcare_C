@@ -18,6 +18,7 @@ import axiosClient from "@/axiosClient";
 export default function App() {
   // const [counter] = useContext(UserContext)
   const onLogout = (ev) => {
+    console.log("logout printed");
     ev.preventDefault();
     axiosClient.get("/logout").then(({}) => {
       setUser(null);
@@ -41,8 +42,7 @@ export default function App() {
     "Help & Feedback",
     "Log Out",
   ];
-  const value = useContext(UserContext);
-  console.log(value);
+  let value = useContext(UserContext);
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} shouldHideOnScroll>
       <NavbarContent>
@@ -58,11 +58,19 @@ export default function App() {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Contact
-          </Link>
-        </NavbarItem>
+        {token ? (
+          <NavbarItem>
+            <Link color="foreground" to="profile">
+              Profile
+            </Link>
+          </NavbarItem>
+        ) : (
+          <NavbarItem>
+            <Link color="foreground" href="#">
+              Contact
+            </Link>
+          </NavbarItem>
+        )}
         <NavbarItem isActive>
           <Link to="/events" aria-current="page">
             Events
@@ -77,9 +85,14 @@ export default function App() {
 
       {token ? (
         <NavbarContent justify="end">
-          <span className=" py-10">{`Welcome ${value.name}`}</span>
+          {value ? (
+            <span className=" py-10">{`Welcome  ${value.name}`}</span>
+          ) : (
+            <span className=" py-10">{`Welcome`}</span>
+          )}
+
           <NavbarItem>
-            <Button onClick={onLogout} color="danger" href="#" variant="flat">
+            <Button onClick={onLogout} color="danger">
               Logout
             </Button>
           </NavbarItem>

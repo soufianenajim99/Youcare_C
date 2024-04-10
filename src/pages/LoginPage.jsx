@@ -1,4 +1,3 @@
-import React from "react";
 import { useRef } from "react";
 
 import { Navigate } from "react-router-dom";
@@ -7,7 +6,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
