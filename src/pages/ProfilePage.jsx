@@ -55,7 +55,7 @@ export function ProfilePage() {
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Name</Label>
-                <Input ref={nameRef} id="name" placeholder={value.name} />
+                <Input ref={nameRef} defaultValue={value.name} id="name" />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
@@ -63,7 +63,7 @@ export function ProfilePage() {
                   ref={emailRef}
                   type="email"
                   id="email"
-                  placeholder={value.email}
+                  defaultValue={value.email}
                 />
               </div>
             </div>

@@ -18,6 +18,7 @@ import axiosClient from "@/axiosClient";
 export default function App() {
   // const [counter] = useContext(UserContext)
   const onLogout = (ev) => {
+    localStorage.removeItem("ACCESS_TOKEN");
     console.log("logout printed");
     ev.preventDefault();
     axiosClient.get("/logout").then(({}) => {
@@ -43,6 +44,7 @@ export default function App() {
     "Log Out",
   ];
   let value = useContext(UserContext);
+  // console.log("llll");
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} shouldHideOnScroll>
       <NavbarContent>
@@ -77,9 +79,15 @@ export default function App() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/orga" color="foreground">
-            Organisateur
-          </Link>
+          {value.organisateur ? (
+            <Link to="/orga" color="foreground">
+              Dashboard_Orga
+            </Link>
+          ) : (
+            <Link to="/orga" color="foreground">
+              Dashboard
+            </Link>
+          )}
         </NavbarItem>
       </NavbarContent>
 
