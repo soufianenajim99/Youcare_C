@@ -24,6 +24,17 @@ const Dashboard = () => {
     formState: { errors },
   } = useForm();
 
+  const handledelete = (id) => {
+    axiosClient
+      .delete(`/delete/${id}`)
+      .then(setLoading(!loading))
+      .catch((err) => {
+        const response = err.response;
+        if (response && response.status === 422) {
+          console.log(response.data.errors);
+        }
+      });
+  };
   const onSubmit = (data) => {
     console.log(data.titre);
     const payload = {
@@ -33,12 +44,15 @@ const Dashboard = () => {
       date: data.date,
       comps: data.comps,
     };
-    axiosClient.post("/anno", payload).catch((err) => {
-      const response = err.response;
-      if (response && response.status === 422) {
-        console.log(response.data.errors);
-      }
-    });
+    axiosClient
+      .post("/anno", payload)
+      .then(setLoading(!loading))
+      .catch((err) => {
+        const response = err.response;
+        if (response && response.status === 422) {
+          console.log(response.data.errors);
+        }
+      });
   };
   let value = useContext(UserContext);
   // console.log(value.organisateur);
@@ -65,7 +79,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getPosts();
-  }, [orga.id]);
+  }, [orga.id, loading]);
 
   console.log(showEve);
 
@@ -147,7 +161,12 @@ const Dashboard = () => {
                   <TableCell>{item.titre}</TableCell>
                   <TableCell className=" flex items-center gap-2">
                     <Button className="my-3">Editer</Button>
-                    <Button variant="destructive">Delete</Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => handledelete(item.id)}
+                    >
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))
