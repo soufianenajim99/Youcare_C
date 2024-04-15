@@ -20,6 +20,7 @@ import { jwtDecode } from "jwt-decode";
 import { ProfilePage } from "./pages/ProfilePage";
 import axiosClient from "./axiosClient";
 import { useEffect, useState } from "react";
+import Mycond from "./pages/Orga/Mycond";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/events" element={<EventsLists />} />
       <Route path="/orga" element={<Dashboard />} />
+      <Route path="/mycond" element={<Mycond />} />
       <Route path="/profile" element={<ProfilePage />} />
     </Route>
   )

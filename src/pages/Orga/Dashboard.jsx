@@ -54,6 +54,26 @@ const Dashboard = () => {
         }
       });
   };
+  const onUpdate = (data) => {
+    console.log(data.titre);
+    const payload = {
+      titre: data.titreup,
+      description: data.descriptionup,
+      localisation: data.localisationup,
+      date: data.dateup,
+      comps: data.compsup,
+      id: data.idup,
+    };
+    axiosClient
+      .patch("/updatean", payload)
+      .then(setLoading(!loading))
+      .catch((err) => {
+        const response = err.response;
+        if (response && response.status === 422) {
+          console.log(response.data.errors);
+        }
+      });
+  };
   let value = useContext(UserContext);
   // console.log(value.organisateur);
   let orga = {
@@ -160,7 +180,76 @@ const Dashboard = () => {
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.titre}</TableCell>
                   <TableCell className=" flex items-center gap-2">
-                    <Button className="my-3">Editer</Button>
+                    {/* <Button className="my-3">Editer</Button> */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" className="float-right">
+                          Editer Annonces
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-md">
+                        <form onSubmit={handleSubmit(onUpdate)}>
+                          <div className="grid w-full items-center gap-4">
+                            <div className="flex flex-col space-y-1.5">
+                              <Label htmlFor="titre">Titre</Label>
+                              <Input
+                                {...register("titreup")}
+                                type="text"
+                                id="titre"
+                                defaultValue={item.titre}
+                              />
+                            </div>
+                            <div className="flex flex-col space-y-1.5">
+                              <Label htmlFor="description">description</Label>
+                              <Input
+                                {...register("descriptionup")}
+                                type="text"
+                                id="description"
+                                defaultValue={item.description}
+                              />
+                            </div>
+                            <div className="flex flex-col space-y-1.5">
+                              <Label htmlFor="localisation">localisation</Label>
+                              <Input
+                                {...register("localisationup")}
+                                type="text"
+                                id="localisation"
+                                defaultValue={item.localisation}
+                              />
+                            </div>
+                            <div className="flex flex-col space-y-1.5">
+                              <Label htmlFor="date">date</Label>
+                              <Input
+                                {...register("dateup")}
+                                type="date"
+                                id="date"
+                                defaultValue={item.date}
+                              />
+                            </div>
+                            <div className="flex flex-col space-y-1.5">
+                              <Label htmlFor="comps">comps</Label>
+                              <Input
+                                {...register("compsup")}
+                                type="text"
+                                id="comps"
+                                defaultValue={item.comps}
+                              />
+                            </div>
+                            <div hidden>
+                              <Input
+                                {...register("idup")}
+                                type="text"
+                                id="comps"
+                                defaultValue={item.id}
+                              />
+                            </div>
+                          </div>
+                          <Button className=" w-full mt-3">
+                            Editer Annonce
+                          </Button>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
                     <Button
                       variant="destructive"
                       onClick={() => handledelete(item.id)}

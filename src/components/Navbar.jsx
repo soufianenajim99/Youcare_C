@@ -89,6 +89,13 @@ export default function App() {
             </Link>
           )}
         </NavbarItem>
+        {value.organisateur && (
+          <NavbarItem>
+            <Link to="/mycond" color="foreground">
+              My Condidatures
+            </Link>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       {token ? (
